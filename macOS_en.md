@@ -94,7 +94,7 @@ Causes the decode phase to be completely inoperable.
 
 ---
 
-# # # (3) The special structure of gloss_dict.npy of CSL-Daily
+### (3) The special structure of gloss_dict.npy of CSL-Daily
 The dictionary format of CSL-Daily is:
 
 ```
@@ -115,7 +115,7 @@ This needs to be handled specially when decoding, otherwise:
 
 ---
 
-# # # (4) The path, device and picture sequence of macOS are not processed in demo.py.
+### (4) The path, device and picture sequence of macOS are not processed in demo.py.
 The official demo only supports:
 - Linux
 - Video input
@@ -429,7 +429,7 @@ The official implementation of CorrNet relies on the following Linux features:
 
 MacOS has completely different hardware and system mechanisms:
 
--**no NVIDIA CUDA** (no CUDA kernel)
+- **no NVIDIA CUDA** (no CUDA kernel)
 - use **apple silicon (m1/m2/m3/M4 …)+MPs to accelerate**
 - The file system behaves differently (path+cache+temporary file)
 - The encapsulation of ffmpeg is different from the author environment.
@@ -457,7 +457,7 @@ RuntimeError: CUDA not available
 
 The reason is that a large number of Tensor in this project will call `. cuda () ` when reasoning, but this device does not exist under macOS.
 
-# # # # 3.2.2 Limitations of MPS
+#### 3.2.2 Limitations of MPS
 
 GPU of macOS accelerates the use of MPS;
 
@@ -583,7 +583,7 @@ The end result is:
 **The original demo.py can't complete normal reasoning even if it can be started on macOS.
 System-level adaptation is necessary to make the project fully operational.**
 
-# # 4. Detailed explanation of MAC OS adaptation modification (line by line description)
+## 4. Detailed explanation of MAC OS adaptation modification (line by line description)
 
 This chapter is the core part of this README.
 Here, we will explain which files must be modified in order for CorrNet to run successfully on macOS, and explain the reasons one by one.
@@ -672,7 +672,7 @@ If you do not do this step:
 
 ---
 
-# ### 4.1.4 logits must be detach before numpy(MPS must).
+#### 4.1.4 logits must be detach before numpy(MPS must).
 
 MPS tensor is not allowed to be directly `. numpy ()`, but must:
 
@@ -1340,7 +1340,7 @@ Chapter 6 explains:
 -How can new users quickly understand the whole project from the directory structure?
 
 This chapter gives users a very good "general understanding" in README.
-# # 7. Reasoning process on MAC OS (multi-graph/video)
+## 7. Reasoning process on MAC OS (multi-graph/video)
 
 This chapter explains in detail how to run inference in macOS environment, including:
 
@@ -1617,7 +1617,7 @@ It is already 0.6.1 in your environment, which means it is correct.
 
 ---
 
-# # # (3) Multi-graphs are out of order.
+### (3) Multi-graphs are out of order.
 Make sure the file name is in a uniform format:
 
 ```
@@ -1628,7 +1628,7 @@ frame_0002.jpg
 
 ---
 
-# # # ④ Error in weight loading
+### ④ Error in weight loading
 Demo.py has joined fallback:
 
 ```
