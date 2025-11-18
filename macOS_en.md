@@ -1,26 +1,26 @@
 # CorrNet—continuous sign language recognition (MAC OS adaptation and reproduction guide)
 
-This document provides a set of successful reproduction on * * MAC OS/Apple Silicon (M1/M2/M3) * *.
-* * Complete operation flow of **CorrNet continuous sign language recognition system (CSL-Daily model) * *.
+This document provides a set of successful reproduction on ** MAC OS/Apple Silicon (M1/M2/M3) **.
+** Complete operation flow of **CorrNet continuous sign language recognition system (CSL-Daily model) **.
 
 Because the official project is mainly oriented to **Linux+CUDA**, the original code will encounter some compatibility problems on macOS.
 For example:
 
--MPS does not support some 3D pooling operations.
+- MPS does not support some 3D pooling operations.
 -ctcdecode cannot compile on macOS.
 Decode failed because of the dictionary structure of-CSL-Daily.
--Some modules do not consider the automatic switching of CPU/MPS.
--demo.py can't read the picture sequence correctly on macOS.
+- Some modules do not consider the automatic switching of CPU/MPS.
+- demo.py can't read the picture sequence correctly on macOS.
 
-This reproduced document provides a complete set of * * processes that can be run from scratch on macOS * *, including:
+This reproduced document provides a complete set of ** processes that can be run from scratch on macOS **, including:
 
--Environment configuration
--Decoder adaptation (pyctcdecode instead of ctcdecode)
--MPS/CPU automatic selection
--demo.py+decode.py completely rewritten.
--Multi-picture input and multi-video format processing
--Optimization of result decoding stability
--Troubleshooting of Common Errors
+- Environment configuration
+- Decoder adaptation (pyctcdecode instead of ctcdecode)
+- MPS/CPU automatic selection
+- demo.py+decode.py completely rewritten.
+- Multi-picture input and multi-video format processing
+- Optimization of result decoding stability
+- Troubleshooting of Common Errors
 
 You can run the project, load the CSL-Daily model, and do continuous sign language recognition with picture sequences or videos just by following the documents from top to bottom.
 
@@ -61,13 +61,13 @@ You can run the project, load the CSL-Daily model, and do continuous sign langua
 
 # 1. Project Introduction (macOS Compatibility Description)
 
-This project is based on * * Corrnet: Corresponse-aware network for continuous sign language recognition * *,
+This project is based on ** Corrnet: Corresponse-aware network for continuous sign language recognition **,
 And use the **CSL-Daily** pre-training model published by the author to carry out continuous sign language recognition (CSLR).
 
 The official operating environment of the original project is:
 
 - **Ubuntu + CUDA（NVIDIA GPU）**
--**ctcdecode (requires GNU tool chain and Linux environment) * *
+- **ctcdecode (requires GNU tool chain and Linux environment)**
 - **PyTorch with GPU acceleration**
 
 However, **macOS (especially Apple Silicon M1/M2/M3) has many incompatible problems with the original environment, which makes the official code unable to run directly:
@@ -109,23 +109,23 @@ The dictionary format of CSL-Daily is:
 Instead of the common "I": 0 "structure.
 
 This needs to be handled specially when decoding, otherwise:
--Forecast index → gloss mapping failed.
--There are a lot of "unks".
--beam search and greedy's output are both wrong.
+- Forecast index → gloss mapping failed.
+- There are a lot of "unks".
+- beam search and greedy's output are both wrong.
 
 ---
 
 # # # (4) The path, device and picture sequence of macOS are not processed in demo.py.
 The official demo only supports:
 - Linux
--Video input
--cuda equipment
+- Video input
+- cuda equipment
 
 macOS：
--no cuda
--The sequence of pictures uploaded is out of order.
--device does not detect automatically, which causes the model to run very slowly on the CPU.
--Need to handle MPS fallback, video reading, file type identification, etc.
+- no cuda
+- The sequence of pictures uploaded is out of order.
+- device does not detect automatically, which causes the model to run very slowly on the CPU.
+- Need to handle MPS fallback, video reading, file type identification, etc.
 
 ---
 
@@ -133,16 +133,16 @@ macOS：
 
 In order to solve all the above problems, this macOS version reproduction document contains:
 
--A set of * * CorrNet reasoning environment that can run * * directly on macOS.
--**decode.py (adapted to pyctDecode+Unicode Vocab) after complete repair * *
--fully restored **demo.py (supporting multi-images/videos/automatic MPS)**
--complete environment dependency (pip freeze)
--complete operation steps (including MPS fallback)
--Troubleshooting of Common Errors
--A detailed description of the structure of CSL-Daily dictionary.
--Explaining the causes of unstable model output and suggestions for optimization.
+- A set of ** CorrNet reasoning environment that can run ** directly on macOS.
+- **decode.py (adapted to pyctDecode+Unicode Vocab) after complete repair**
+- fully restored **demo.py (supporting multi-images/videos/automatic MPS)**
+- complete environment dependency (pip freeze)
+- complete operation steps (including MPS fallback)
+- Troubleshooting of Common Errors
+- A detailed description of the structure of CSL-Daily dictionary.
+- Explaining the causes of unstable model output and suggestions for optimization.
 
-* * Ultimate goal: mac users can run CSL-Daily reasoning of CorrNet with zero resistance. **
+**Ultimate goal: mac users can run CSL-Daily reasoning of CorrNet with zero resistance.**
 
 ---
 
@@ -150,11 +150,11 @@ In order to solve all the above problems, this macOS version reproduction docume
 
 This README is very suitable for the following readers:
 
--Students who use the **M1/M2/M3 MacBook**
--users without NVIDIA GPU
--Want to run fast through CSL-Daily reasoning
--I want to integrate CorrNet into my sign language recognition project.
--Want to learn CSLR reasoning pipeline (input → preprocessing → model → CTC decode)
+- Students who use the **M1/M2/M3 MacBook**
+- users without NVIDIA GPU
+- Want to run fast through CSL-Daily reasoning
+- I want to integrate CorrNet into my sign language recognition project.
+- Want to learn CSLR reasoning pipeline (input → preprocessing → model → CTC decode)
 
 ---
 
@@ -162,9 +162,9 @@ This README is very suitable for the following readers:
 
 After completing this tutorial, your mac can realize:
 
--load **dev_30.60_CSL-Daily.pt** provided by the author.
--Support continuous sign language recognition of * * multiple images * * (continuous frames)
--Support * * video file * * input.
+- load **dev_30.60_CSL-Daily.pt** provided by the author.
+- Support continuous sign language recognition of **multiple images** (continuous frames)
+- Support ** video file ** input.
 -finally output a word sequence, such as:
 
 ```
@@ -205,7 +205,7 @@ which pip
 
 ### 2.2 Select and install the appropriate PyTorch (supporting MPS).
 
-Apple chips don't support CUDA, so PyTorch with **MPS acceleration * * must be installed.
+Apple chips don't support CUDA, so PyTorch with **MPS acceleration ** must be installed.
 
 Recommended installation instructions (from the official):
 
@@ -422,17 +422,17 @@ The following explains why adaptation is necessary from four aspects: system cha
 The official implementation of CorrNet relies on the following Linux features:
 
 - CUDA GPU（NVIDIA）
--official Torch+CUDA construction
--Linux file path processing method
--Default compatibility of Linux for video input (OpenCV+decord)
--GPUDataParallel (multi-card training/reasoning framework) used by the author by default on Linux.
+- official Torch+CUDA construction
+- Linux file path processing method
+- Default compatibility of Linux for video input (OpenCV+decord)
+- GPUDataParallel (multi-card training/reasoning framework) used by the author by default on Linux.
 
 MacOS has completely different hardware and system mechanisms:
 
--* * no NVIDIA CUDA** (no CUDA kernel)
--use * * apple silicon (m1/m2/m3/M4 …)+MPs to accelerate * *
--The file system behaves differently (path+cache+temporary file)
--The encapsulation of ffmpeg is different from the author environment.
+-**no NVIDIA CUDA** (no CUDA kernel)
+- use **apple silicon (m1/m2/m3/M4 …)+MPs to accelerate**
+- The file system behaves differently (path+cache+temporary file)
+- The encapsulation of ffmpeg is different from the author environment.
 
 Therefore, all the errors encountered by the original demo.py are essentially from "the author assumes that you are running on Linux".
 
@@ -461,41 +461,41 @@ The reason is that a large number of Tensor in this project will call `. cuda ()
 
 GPU of macOS accelerates the use of MPS;
 
--Not all CUDA operators are supported.
--The accuracy behavior is not completely consistent with CUDA.
--Large-dimensional convolution is sometimes slower than CPU.
+- Not all CUDA operators are supported.
+- The accuracy behavior is not completely consistent with CUDA.
+- Large-dimensional convolution is sometimes slower than CPU.
 -some Tensor can't mix GPU/CPU (device must be put together).
 
 So demo.py must be rewritten as:
 
--automatically detect MPS/CUDA/CPU.
--Select the final running equipment according to the actual equipment.
+- automatically detect MPS/CUDA/CPU.
+- Select the final running equipment according to the actual equipment.
 
 ---
 
 ### 3.3 decode part: official decode.py is not suitable for macOS.
 
-To successfully identify CSL-Daily, a complete decode process of **predict → gloss → unicode vocabulary * * is needed.
+To successfully identify CSL-Daily, a complete decode process of **predict → gloss → unicode vocabulary ** is needed.
 
 But the official decode.py has several Linux-only assumptions, such as:
 
-1. ** Use the wrong vocab dictionary order * *
-2. * * Unicode VOAB/GlossVOAB is not read correctly * *
-3. ** Input is in tuple format by default, not list**
-4. **decode return structure does not match demo.py * *
+1. **Use the wrong vocab dictionary order**
+2. **Unicode VOAB/GlossVOAB is not read correctly**
+3. **Input is in tuple format by default, not list**
+4. **decode return structure does not match demo.py**
 
 When no adaptation is made, the following will appear:
 
--index prediction is normal, but it cannot be mapped to gloss.
--the output is all ` < unk >`.
--beam search output dimension does not match, report the error directly.
+- index prediction is normal, but it cannot be mapped to gloss.
+- the output is all ` < unk >`.
+- beam search output dimension does not match, report the error directly.
 
 Therefore, it is necessary to:
 
--rewrite decode entry
--fix unicode vocab reading mode
--fix input type (list instead of tuple)
--Fix the return value format (string list)
+- rewrite decode entry
+- fix unicode vocab reading mode
+- fix input type (list instead of tuple)
+- Fix the return value format (string list)
 
 Otherwise, although the macOS environment can run the model, it can't decode correctly.
 
@@ -505,9 +505,9 @@ Otherwise, although the macOS environment can run the model, it can't decode cor
 
 Decord will appear on macOS:
 
--Unable to automatically select the hardware decoder
--A large number of frame I/O failed to read.
--The sorting between pictures depends on the Finder's metadata, unlike Linux.
+- Unable to automatically select the hardware decoder
+- A large number of frame I/O failed to read.
+- The sorting between pictures depends on the Finder's metadata, unlike Linux.
 
 Official demo hypothesis:
 
@@ -517,18 +517,18 @@ cv2.VideoCapture(...)
 
 But VideoCapture under macOS may return:
 
--Only 0~1 frames can be read.
--Reading frames is out of order.
--a lot of "corevideo pixel buffer errors"
--Reading mp4 must rely on ffmpeg installation.
+- Only 0~1 frames can be read.
+- Reading frames is out of order.
+- a lot of "corevideo pixel buffer errors"
+- Reading mp4 must rely on ffmpeg installation.
 
 So demo must be modified to:
 
--decoding with decord.VideoReader+CPU.
--Pictures are sorted by file name to avoid disorder.
--Add exception protection
+- decoding with decord.VideoReader+CPU.
+- Pictures are sorted by file name to avoid disorder.
+- Add exception protection
 
-These modifications enable macOS users to * * stabilize input video frames.
+These modifications enable macOS users to ** stabilize input video frames.
 
 ---
 
@@ -537,12 +537,12 @@ These modifications enable macOS users to * * stabilize input video frames.
 GpuDataParallel default dependency in official utils:
 
 - torch.cuda.device_count()
--CUDA multi-card scheduling
+- CUDA multi-card scheduling
 
 There macOS only:
 
--single card MPS
--or pure CPU.
+- single card MPS
+- or pure CPU.
 
 So if you don't change:
 
@@ -552,9 +552,9 @@ AttributeError: 'mps' object has no attribute 'device_count'
 
 Need to rewrite part of the logic of GpuDataParallel to make it:
 
--Right CUDA: Doka
--for MPS: single card operation
--to CPU: fall back to CPU.
+- Right CUDA: Doka
+- for MPS: single card operation
+- to CPU: fall back to CPU.
 
 And will:
 
@@ -580,19 +580,20 @@ To sum up:
 
 The end result is:
 
-* * The original demo.py can't complete normal reasoning even if it can be started on macOS.
-System-level adaptation is necessary to make the project fully operational. **
+**The original demo.py can't complete normal reasoning even if it can be started on macOS.
+System-level adaptation is necessary to make the project fully operational.**
+
 # # 4. Detailed explanation of MAC OS adaptation modification (line by line description)
 
 This chapter is the core part of this README.
 Here, we will explain which files must be modified in order for CorrNet to run successfully on macOS, and explain the reasons one by one.
 Contains the following contents:
 
--4.1 adapt decode.py (fix vocab/unicode/numpy/beam search)
--4.2 fix demo.py (input, equipment, model loading, MPS fallback)
--4.3 repair utils/GpuDataParallel
--4.4 Repair picture sorting and video frame reading (to prevent disorder)
--4.5 modify the model weight loading mode (compatible with macOS torch)
+- 4.1 adapt decode.py (fix vocab/unicode/numpy/beam search)
+- 4.2 fix demo.py (input, equipment, model loading, MPS fallback)
+- 4.3 repair utils/GpuDataParallel
+- 4.4 Repair picture sorting and video frame reading (to prevent disorder)
+- 4.5 modify the model weight loading mode (compatible with macOS torch)
 
 ---
 
@@ -725,11 +726,11 @@ Make sure that demo.py can be parsed correctly.
 
 The original demo.py does not support macOS for the following reasons:
 
--Use `. cuda ()` to forcibly move data to CUDA(macOS None).
--GpuDataParallel depends on CUDA
--OpenCV/VideoReader is out of order under macOS.
--Equipment automatically detects missing.
--The logic of video reading and padding cannot handle Tensor on MPS.
+- Use `. cuda ()` to forcibly move data to CUDA(macOS None).
+- GpuDataParallel depends on CUDA
+- OpenCV/VideoReader is out of order under macOS.
+- Equipment automatically detects missing.
+- The logic of video reading and padding cannot handle Tensor on MPS.
 
 The following are the main modification points.
 
@@ -838,9 +839,9 @@ The original version does not support macOS.
 
 Must be modified to:
 
--CUDA: Doka
--MPS: single card
--CPU: single card
+- CUDA: Doka
+- MPS: single card
+- CPU: single card
 
 And transform:
 
@@ -857,9 +858,9 @@ Ensure that all devices are compatible.
 
 Video frame length reading on macOS is unstable, so demo must be fixed:
 
--left pad
--right pad
--stride alignment
+- left pad
+- right pad
+- stride alignment
 -don't mix CPU/MPS device in temporary padding.
 
 Otherwise reasoning will appear:
@@ -886,11 +887,11 @@ Including image sequence input, video input, beam search decoding, unicode vocab
 
 This chapter will fully explain how to create a complete environment that can run CorrNet on macOS, including:
 
--python/conda environment creation
--PyTorch (with MPS support) version selection and description
--pip freeze version explanation
--Why do I have to use these versions?
--One-stop command that can be directly copied and run.
+- python/conda environment creation
+- PyTorch (with MPS support) version selection and description
+- pip freeze version explanation
+- Why do I have to use these versions?
+- One-stop command that can be directly copied and run.
 
 ---
 
@@ -898,16 +899,16 @@ This chapter will fully explain how to create a complete environment that can ru
 
 macOS：
 
--macOS 13 Ventura or higher
--Apple Silicon(M1/M2/M3) or Intel.
--More than 8GB of memory (16GB recommended)
+- macOS 13 Ventura or higher
+- Apple Silicon(M1/M2/M3) or Intel.
+- More than 8GB of memory (16GB recommended)
 
 Framework requirements:
 
--Python 3.9 (most stable support PyTorch+decord)
--PyTorch 2.2 or above (native support MPS)
--torchvision/torchaudio is the same version.
--CUDA(macOS without CUDA) is not required.
+- Python 3.9 (most stable support PyTorch+decord)
+- PyTorch 2.2 or above (native support MPS)
+- torchvision/torchaudio is the same version.
+- CUDA(macOS without CUDA) is not required.
 
 ---
 
@@ -922,8 +923,8 @@ conda activate corrnet
 
 Why does Python have to be **3.9**?
 
--PyTorch on macOS is the most stable in 3.9.
--decord has compatibility issues with python>3.10.
+- PyTorch on macOS is the most stable in 3.9.
+- decord has compatibility issues with python>3.10.
 The-CorrNet project itself assumes Python 3.8/3.9 in Linux.
 
 ---
@@ -941,7 +942,7 @@ This version contains:
 
 - CPU kernels
 - MPS kernels
--No CUDA (normal)
+- No CUDA (normal)
 
 Post-installation test:
 
@@ -976,18 +977,18 @@ pip install transformers pyctcdecode
 
 Why are these versions?
 
--`decord = = 0.6.1`: latest compatible version of MAC OS.
--`opencv-python==4.11 = 4.11`: QT dependency problem will not be triggered.
--`numpy = = 1.26.4`: pytorch 2.8 is the most stable collocation.
--`pyctcdecode==0.5.0: The most stable version based on Python 3.9.
--`gradio = = 3.44.4`: UI is the most stable and does not conflict with torch.
+- `decord = = 0.6.1`: latest compatible version of MAC OS.
+- `opencv-python==4.11 = 4.11`: QT dependency problem will not be triggered.
+- `numpy = = 1.26.4`: pytorch 2.8 is the most stable collocation.
+- `pyctcdecode==0.5.0: The most stable version based on Python 3.9.
+- `gradio = = 3.44.4`: UI is the most stable and does not conflict with torch.
 
 ---
 
 ## 5.5 Project Dependency (consistent with your current environment)
 
 The following is the' pip freeze' of your current environment.
-This is the combination of * * actually measured versions that can run ** CorrNet on macOS:
+This is the combination of ** actually measured versions that can run ** CorrNet on macOS:
 
 ```
 aiofiles==23.2.1
@@ -1027,9 +1028,9 @@ uvicorn==0.38.0
 
 Key explanation:
 
-1. * * torch = = 2.8.0+numpy = = 1.26.4 * *→ the most stable combination.
-2. * * pyctDecode = = 0.5.0 * * → Perfect compatibility with Python 3.9.
-3. * * Decord = = 0.6.1 * *→ the highest version available for MAC OS.
+1. **torch = = 2.8.0+numpy = = 1.26.4**→ the most stable combination.
+2. **pyctDecode = = 0.5.0** → Perfect compatibility with Python 3.9.
+3. **Decord = = 0.6.1**→ the highest version available for MAC OS.
 4. **gradio==3.44.4** → Fully support multi-image upload/video UI.
 5. **opencv-python==4.11** → QT-free crash
 
@@ -1054,7 +1055,7 @@ pip install tqdm
 ```
 
 Guaranteed:
-**100% successfully run CorrNet demo.py (picture sequence+video input) on macOS * *
+**100% successfully run CorrNet demo.py (picture sequence+video input) on macOS **
 
 ---
 
@@ -1084,18 +1085,18 @@ python -m pip list
 
 This section provides:
 
--detailed steps to create a macOS environment
--Explain the version requirements of each library.
--Give the combination of dependencies that you are using and have verified.
--Give a replicable one-stop command.
+- detailed steps to create a macOS environment
+- Explain the version requirements of each library.
+- Give the combination of dependencies that you are using and have verified.
+- Give a replicable one-stop command.
 
-These contents ensure that other macOS users can **100% reproduce your environment * *, avoiding:
+These contents ensure that other macOS users can **100% reproduce your environment **, avoiding:
 
--MPS is not available
--decode.py reported that the numpy type is wrong.
--demo failed to read the video.
--CUDA related error
--Multi-graph sorting disorder
+- MPS is not available
+- decode.py reported that the numpy type is wrong.
+- demo failed to read the video.
+- CUDA related error
+- Multi-graph sorting disorder
 ## 6. Description of code file structure (directory structure+function of each file)
 
 This chapter explains the complete and operational directory structure of this project on macOS, and explains the purpose of each file/folder, so that newcomers can quickly understand the project architecture.
@@ -1146,7 +1147,7 @@ CorrNet/
 ## 6.2 Top-level File Function Description
 
 ### 1）preprocess/
-Dictionaries and pre-processing data needed for storing * * sequence → text * *.
+Dictionaries and pre-processing data needed for storing ** sequence → text **.
 
 -gloss_dict.npy: dictionary for mapping key frames of sign language to text.
 -Each data set (phoenix/CSL) contains its own corresponding dictionary.
@@ -1193,11 +1194,11 @@ slr_network/
 
 Core:
 
--`SLRModel.py is the entrance of the whole network.
--Contains:
--feature extraction (2D/3D Conv)
--time series modeling (ConvCTC+SeqCTC)
--Decoded output
+- `SLRModel.py is the entrance of the whole network.
+- Contains:
+- feature extraction (2D/3D Conv)
+- time series modeling (ConvCTC+SeqCTC)
+- Decoded output
 
 The reasoning call of demo.py is as follows:
 
@@ -1207,18 +1208,18 @@ ret_dict = model(vid, vid_lgt, ...)
 
 ---
 
-### 4)decode.py (you rewrote it yourself)
-Used for * * command line video reasoning * * (no UI).
+### (4)decode.py (you rewrote it yourself)
+Used for ** command line video reasoning ** (no UI).
 
 Mainly includes:
 
 ```
--Load the model
--load gloss_dict
--Video frame reading (decord)
--transform image sequence
--Model reasoning
--output text
+- Load the model
+- load gloss_dict
+- Video frame reading (decord)
+- transform image sequence
+- Model reasoning
+- output text
 ```
 
 Suitable for shell execution:
@@ -1240,14 +1241,14 @@ A fully operational demo** with **Gradio Web UI, which supports:
 Its functional modules:
 
 ```
--file path processing (safe_path)
--multi-graph sorting ensures correct frame order
--image reading (OpenCV)
--video reading (decord)
--transform pretreatment
--stride of padding alignment model convolution
--Model reasoning
--Gradio shows UI
+- file path processing (safe_path)
+- multi-graph sorting ensures correct frame order
+- image reading (OpenCV)
+- video reading (decord)
+- transform pretreatment
+- stride of padding alignment model convolution
+- Model reasoning
+- Gradio shows UI
 ```
 
 This is the most important file to adapt for macOS users.
@@ -1343,12 +1344,12 @@ This chapter gives users a very good "general understanding" in README.
 
 This chapter explains in detail how to run inference in macOS environment, including:
 
--Inference of multiple pictures as a frame sequence
--video file reasoning
+- Inference of multiple pictures as a frame sequence
+- video file reasoning
 - demo.py（Web UI）
--decode.py (command line)
--Common error handling
--explain MPS reasoning acceleration of macOS in particular.
+- decode.py (command line)
+- Common error handling
+- explain MPS reasoning acceleration of macOS in particular.
 
 ---
 
@@ -1424,10 +1425,10 @@ It is suitable for you to divide the video into consecutive frames: img _ img_00
 
 Demo.py will automatically:
 
--Press "Sort file names naturally"
--Put it together into a whole sequence
--feed into the model
--Output sign language sentences
+- Press "Sort file names naturally"
+- Put it together into a whole sequence
+- feed into the model
+- Output sign language sentences
 
 On the page:
 
@@ -1533,9 +1534,9 @@ device = "cpu"
 
 Function:
 
--**macOS automatically walks GPU(MPS)**
--Linux automatically walks CUDA.
--automatic CPU degradation without GPU
+- **macOS automatically walks GPU(MPS)**
+- Linux automatically walks CUDA.
+- automatic CPU degradation without GPU
 
 No need for users to manually change the code.
 This is your special adaptation for macOS, which is very critical.
@@ -1642,11 +1643,11 @@ Ensure compatibility with different weight formats.
 
 In this chapter, you learned:
 
--How to run reasoning quickly on Mac OS?
--How to use demo.py(UI is the friendliest)
--How to use decode.py (command line)
--Complete reasoning process of multi-graph+video
--MPS automatic acceleration and fallback
--Common error handling
+- How to run reasoning quickly on Mac OS?
+- How to use demo.py(UI is the friendliest)
+- How to use decode.py (command line)
+- Complete reasoning process of multi-graph+video
+- MPS automatic acceleration and fallback
+- Common error handling
 
 At this point, a mac user can run your project independently.
