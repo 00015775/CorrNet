@@ -133,7 +133,7 @@ macOS：
 
 In order to solve all the above problems, this macOS version reproduction document contains:
 
-- A set of ** CorrNet reasoning environment that can run ** directly on macOS.
+- A set of **CorrNet reasoning environment that can run** directly on macOS.
 - **decode.py (adapted to pyctDecode+Unicode Vocab) after complete repair**
 - fully restored **demo.py (supporting multi-images/videos/automatic MPS)**
 - complete environment dependency (pip freeze)
@@ -164,7 +164,7 @@ After completing this tutorial, your mac can realize:
 
 - load **dev_30.60_CSL-Daily.pt** provided by the author.
 - Support continuous sign language recognition of **multiple images** (continuous frames)
-- Support ** video file ** input.
+- Support **video file** input.
 -finally output a word sequence, such as:
 
 ```
@@ -205,7 +205,7 @@ which pip
 
 ### 2.2 Select and install the appropriate PyTorch (supporting MPS).
 
-Apple chips don't support CUDA, so PyTorch with **MPS acceleration ** must be installed.
+Apple chips don't support CUDA, so PyTorch with **MPS acceleration** must be installed.
 
 Recommended installation instructions (from the official):
 
@@ -475,7 +475,7 @@ So demo.py must be rewritten as:
 
 ### 3.3 decode part: official decode.py is not suitable for macOS.
 
-To successfully identify CSL-Daily, a complete decode process of **predict → gloss → unicode vocabulary ** is needed.
+To successfully identify CSL-Daily, a complete decode process of **predict → gloss → unicode vocabulary** is needed.
 
 But the official decode.py has several Linux-only assumptions, such as:
 
@@ -528,7 +528,7 @@ So demo must be modified to:
 - Pictures are sorted by file name to avoid disorder.
 - Add exception protection
 
-These modifications enable macOS users to ** stabilize input video frames.
+These modifications enable macOS users to stabilize input video frames.
 
 ---
 
@@ -988,7 +988,7 @@ Why are these versions?
 ## 5.5 Project Dependency (consistent with your current environment)
 
 The following is the' pip freeze' of your current environment.
-This is the combination of ** actually measured versions that can run ** CorrNet on macOS:
+This is the combination of **actually measured versions that can run** CorrNet on macOS:
 
 ```
 aiofiles==23.2.1
@@ -1147,7 +1147,7 @@ CorrNet/
 ## 6.2 Top-level File Function Description
 
 ### 1）preprocess/
-Dictionaries and pre-processing data needed for storing ** sequence → text **.
+Dictionaries and pre-processing data needed for storing **sequence → text**.
 
 -gloss_dict.npy: dictionary for mapping key frames of sign language to text.
 -Each data set (phoenix/CSL) contains its own corresponding dictionary.
@@ -1209,7 +1209,7 @@ ret_dict = model(vid, vid_lgt, ...)
 ---
 
 ### (4)decode.py (you rewrote it yourself)
-Used for ** command line video reasoning ** (no UI).
+Used for **command line video reasoning** (no UI).
 
 Mainly includes:
 
@@ -1231,7 +1231,7 @@ python decode.py --model_path pretrained/phoenix.pth --video  xxx.mp4
 ---
 
 ### 5)demo.py (your main version)
-A fully operational demo** with **Gradio Web UI, which supports:
+A fully operational demo **with** Gradio Web UI, which supports:
 
 -Multiple pictures (sorted by file name and automatically combined into a sequence)
 -Video file (automatic frame extraction)
