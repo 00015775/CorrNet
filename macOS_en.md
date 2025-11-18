@@ -76,7 +76,7 @@ However, **macOS (especially Apple Silicon M1/M2/M3) has many incompatible probl
 
 ## 1.1 The reason why the original project can't run directly on macOS
 
-###(1)MPS does not support 3D pooling.
+### (1)MPS does not support 3D pooling.
 The front-end visual encoder of CorrNet contains some operators that need GPU optimization.
 The MPS Metal backend of macOS still doesn't support some 3D pooling (especially ` max_pool3d' and some stride/padding combinations).
 
@@ -84,7 +84,7 @@ Therefore, the model will report an error directly when it runs to the middle fe
 
 ---
 
-###(2)ctcdecode cannot be installed.
+### (2)ctcdecode cannot be installed.
 The original project used **ctcdecode** (acceleration library based on C++ & OpenMP).
 macOS：
 -OpenMP failed to compile successfully.
