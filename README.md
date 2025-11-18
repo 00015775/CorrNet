@@ -7,7 +7,7 @@ This repo is based on [VAC (ICCV 2021)](https://openaccess.thecvf.com/content/IC
 
 (**Update on 2025/01/28**) We release a demo for Continuous sign language recognition that supports multi-images and video inputs! You can watch the demo video to watch its effects, or deploy a demo locally to test its performance. 
 
-(**Update on 2025/11/19**) We release a .md file to support inference and web demo on macOS upon Apple series. Thanks to the efforts devoted by Zelin Dai! Details can be referred to [macOS_cn.md](https://github.com/hulianyuyy/CorrNet/macOS_cn.md) in chinese and [macOS_en.md](https://github.com/hulianyuyy/CorrNet/macOS_en.md) in English.
+(**Update on 2025/11/19**) We release a .md file to support inference and web demo on macOS upon Apple series. Thanks to the efforts devoted by Zelin Dai! Details can be referred to [macOS_cn.md](https://github.com/hulianyuyy/CorrNet/blob/main/macOS_cn.md) in chinese and [macOS_en.md](https://github.com/hulianyuyy/CorrNet/blob/main/macOS_en.md) in English.
 
 <!-- ![Demo video](https://github.com/hulianyuyy/CorrNet/blob/main/demo_hq.gif)
 
