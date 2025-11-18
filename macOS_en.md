@@ -1,18 +1,18 @@
 # CorrNet—continuous sign language recognition (MAC OS adaptation and reproduction guide)
 
-This document provides a set of successful reproduction on ** MAC OS/Apple Silicon (M1/M2/M3) **.
-** Complete operation flow of **CorrNet continuous sign language recognition system (CSL-Daily model) **.
+This document provides a set of successful reproduction on **MAC OS/Apple Silicon (M1/M2/M3)**.
+**Complete operation flow of **CorrNet continuous sign language recognition system (CSL-Daily model)**.
 
 Because the official project is mainly oriented to **Linux+CUDA**, the original code will encounter some compatibility problems on macOS.
 For example:
 
 - MPS does not support some 3D pooling operations.
--ctcdecode cannot compile on macOS.
+- ctcdecode cannot compile on macOS.
 Decode failed because of the dictionary structure of-CSL-Daily.
 - Some modules do not consider the automatic switching of CPU/MPS.
 - demo.py can't read the picture sequence correctly on macOS.
 
-This reproduced document provides a complete set of ** processes that can be run from scratch on macOS **, including:
+This reproduced document provides a complete set of **processes that can be run from scratch on macOS**, including:
 
 - Environment configuration
 - Decoder adaptation (pyctcdecode instead of ctcdecode)
@@ -61,7 +61,7 @@ You can run the project, load the CSL-Daily model, and do continuous sign langua
 
 # 1. Project Introduction (macOS Compatibility Description)
 
-This project is based on ** Corrnet: Corresponse-aware network for continuous sign language recognition **,
+This project is based on **Corrnet: Corresponse-aware network for continuous sign language recognition**,
 And use the **CSL-Daily** pre-training model published by the author to carry out continuous sign language recognition (CSLR).
 
 The official operating environment of the original project is:
