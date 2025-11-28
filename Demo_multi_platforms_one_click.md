@@ -51,6 +51,8 @@ The purpose of this enhanced edition is to:
    - API 客户端识别示例输出  
    - 与原版对比的稳定性/正确率提升说明
 
+Structure of this file:
+
 1. **Summary of Code Modifications**
     - `resnet.py` Core changes to fix CSL-Daily inference
     - `decode.py` Complete replacement with `pyctcdecode`
@@ -951,7 +953,7 @@ After uploading multiple sign language sequences named `000000.jpg ~ 0000xx.jpg`
 - 多帧推理稳定，无随机顺序问题  
 - pyctcdecode 提升了解码准确率（句子更完整）  
 
-### 📌 4. Performance Metrics (Brief)
+Performance Metrics (Brief)
 
 * CSL-Daily official examples are fully loadable
 * MPS / CPU inference speed improvement (real-time processing on MacBook)

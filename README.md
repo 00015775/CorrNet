@@ -7,7 +7,7 @@ This repo is based on [VAC (ICCV 2021)](https://openaccess.thecvf.com/content/IC
 
 (**Update on 2025/01/28**) We release a demo for Continuous sign language recognition that supports multi-images and video inputs! You can watch the demo video to watch its effects, or deploy a demo locally to test its performance. 
 
-(**Update on 2025/11/19**) We release a .md file to support inference and web demo on macOS upon Apple series. Thanks to the efforts devoted by Zelin Dai! Details can be referred to [macOS_cn.md](https://github.com/hulianyuyy/CorrNet/blob/main/macOS_cn.md) in chinese and [macOS_en.md](https://github.com/hulianyuyy/CorrNet/blob/main/macOS_en.md) in English.
+(**Update on 2025/11/28**) We release a .md file to support inference and web demo on macOS upon Apple series. Thanks to the efforts devoted by Zelin Dai! Details can be referred to [macOS_cn.md](https://github.com/hulianyuyy/CorrNet/blob/main/macOS_cn.md) in chinese and [macOS_en.md](https://github.com/hulianyuyy/CorrNet/blob/main/macOS_en.md) in English. A enhanced demo that can be run across Linux/Windows/macOS is released. Details can be referred to [Demo_multi_platforms_one_click.md](https://github.com/hulianyuyy/CorrNet/blob/main/Demo_multi_platforms_one_click.md)
 
 <!-- ![Demo video](https://github.com/hulianyuyy/CorrNet/blob/main/demo_hq.gif)
 
@@ -175,7 +175,7 @@ Acceptable paramters:
 
 After running the command, you can visit `http://0.0.0.0:7862` to play with the demo. You can also change it into an public URL by setting `share=True` in line 176 in `demo.py`.
 
-(Update on 2025/11/28) We have provided a enhanced demo that can be run across Linux/Windows/macOS. Many thanks to Zelin Dai! Details can be referred to [Demo_multi_platforms_one_click.md](https://github.com/hulianyuyy/CorrNet/blob/main/Demo_multi_platforms_one_click.md)
+(**Update on 2025/11/28**) We have provided a enhanced demo that can be run across Linux/Windows/macOS. Many thanks to Zelin Dai! Details can be referred to [Demo_multi_platforms_one_click.md](https://github.com/hulianyuyy/CorrNet/blob/main/Demo_multi_platforms_one_click.md)
 ### Citation
 
 If you find this repo useful in your research works, please consider citing:
