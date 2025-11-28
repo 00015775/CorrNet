@@ -174,6 +174,8 @@ Acceptable paramters:
 - `max_frames_num`, the max input frames sampled from an input video, default=360.
 
 After running the command, you can visit `http://0.0.0.0:7862` to play with the demo. You can also change it into an public URL by setting `share=True` in line 176 in `demo.py`.
+
+(Update on 2025/11/28) We have provided a enhanced demo that can be run across Linux/Windows/macOS. Many thanks to Zelin Dai! Details can be referred to [Demo_multi_platforms_one_click.md](https://github.com/hulianyuyy/CorrNet/blob/main/Demo_multi_platforms_one_click.md)
 ### Citation
 
 If you find this repo useful in your research works, please consider citing:
